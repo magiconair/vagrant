@@ -1,0 +1,16 @@
+# Vagrant template to create a fully patched ubuntu/trusty64
+# base box with guest additions installed. Requires the
+# vagrant-vbguest plugin
+Vagrant.configure("2") do |config|
+  config.vm.box = "ubuntu/trusty64"
+  config.vm.box_check_update = false
+  config.vm.provision "shell", inline: <<-SHELL
+    apt-get update
+	apt-get -y upgrade
+	apt-get -y autoclean
+    apt-get -y autoremove
+  SHELL
+  config.vm.provider "virtualbox" do |v|
+    v.name = "ubuntu-trusty64-patched"
+  end
+end
